@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--Project made by Krzysztof Tałałaj. https://krzysztoft415.github.io/ -->
+<html>
+<head>
+  <title>Perlin Noise Particles Loop</title>
+  <script src="perlin.js"></script>
+  <script src="particle.js"></script>
+  <script src="noiseLoop.js"></script>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+<canvas id='cnvs'></canvas>
+</body>
+
+<script>
+let cnvs = document.getElementById('cnvs');
+cnvs.width = cnvs.height = 1000;
+let ctx = cnvs.getContext('2d');
+
+let particles = new Array(100);
+for (let i = 0; i < particles.length; i++) {
+    particles[i] = new Particle(cnvs.width, cnvs.height); }
+
+let counter = 0;
+let totalFrames = 1500;
+let perlin = new Perlin();
+
+function render() {
+  ctx.fillStyle = 'rgb(0,0,0)';
+  ctx.fillRect(0,0,cnvs.width,cnvs.height);
+  let percent = (counter % totalFrames) / totalFrames;
+  let a = percent * Math.PI * 2;
+  for (let p of particles) {
+    let x = p.xNoise.value(a, perlin);
+    let y = p.yNoise.value(a, perlin);
+    let d = p.dNoise.value(a, perlin) / 2;
+    let r = p.rNoise.value(a, perlin);
+    let g = p.gNoise.value(a, perlin);
+    let b = p.bNoise.value(a, perlin);
+    ctx.beginPath();
+    ctx.arc(x, y, d, 0, 2 * Math.PI, false);
+    ctx.fillStyle = 'rgba('+r+','+g+','+b+', 50%)';
+    ctx.fill();
+  }
+  counter ++;
+  window.requestAnimationFrame(render);
+}
+window.requestAnimationFrame(render);
+</script>
+</html>
