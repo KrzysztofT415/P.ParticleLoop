@@ -8,8 +8,9 @@ canvas.height = window.innerHeight
 let ctx = canvas.getContext('2d')
 
 let particles = new Array(Math.floor(canvas.width * canvas.height * 0.0001))
+let type = Math.floor(Math.random() * 2)
 for (let i = 0; i < particles.length; i++) {
-    particles[i] = new Particle(canvas.width, canvas.height)
+    particles[i] = new Particle(canvas.width, canvas.height, type)
 }
 
 let counter = 0
